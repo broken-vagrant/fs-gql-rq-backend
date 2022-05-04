@@ -1,5 +1,5 @@
 {
-  "name": "@starter/server",
+  "name": "@backend/server",
   "license": "MIT",
   "scripts": {
     "dev": "ts-node-dev --no-notify --respawn --transpile-only -r tsconfig-paths/register src/index",
