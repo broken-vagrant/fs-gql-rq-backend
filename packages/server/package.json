@@ -1,0 +1,78 @@
+{
+  "name": "@starter/server",
+  "license": "MIT",
+  "scripts": {
+    "dev": "ts-node-dev --no-notify --respawn --transpile-only -r tsconfig-paths/register src/index",
+    "start": "node -r ./scripts/prod-loader.js dist/src/index.js",
+    "clean": "rm -rf dist",
+    "lint": "tsc --noEmit && eslint  --quiet --fix --ignore-path .gitignore",
+    "test": "rm -rf prisma/dev.db && prisma db push && jest --setupFiles dotenv/config",
+    "build": "npm -s run clean && npm -s run generate && tsc",
+    "prettier": "prettier --ignore-path .gitignore --write",
+    "generate": "npm -s run nexus:gen && prisma migrate deploy && prisma generate",
+    "nexus:gen": "ts-node src/schema",
+    "prisma:dev": "prisma migrate dev && prisma generate",
+    "prisma:gen": "prisma generate",
+    "prisma:mig:dev": "prisma migrate dev",
+    "prisma:mig:reset": "prisma migrate reset",
+    "prisma:mig:deploy": "prisma migrate deploy",
+    "prisma:db:push": "prisma db push",
+    "publish:schema": "rover graph introspect http://localhost:4000 | rover graph publish starter-fullstack@current --schema -",
+    "gen:env-types": "gen-env-types .env -o src/types/env.d.ts -e ."
+  },
+  "dependencies": {
+    "@prisma/client": "3.10.0",
+    "apollo-server": "3.6.3",
+    "bcrypt": "^5.0.1",
+    "cookie": "^0.4.2",
+    "dotenv": "^16.0.0",
+    "graphql": "15.8.0",
+    "graphql-scalars": "1.14.1",
+    "jsonwebtoken": "^8.5.1",
+    "nexus": "1.2.0"
+  },
+  "devDependencies": {
+    "@faker-js/faker": "^6.0.0",
+    "@tsconfig/node16": "^1.0.2",
+    "@types/bcrypt": "^5.0.0",
+    "@types/cookie": "^0.4.1",
+    "@types/jest": "^27.4.1",
+    "@types/jsonwebtoken": "^8.5.8",
+    "@types/node": "16.11.26",
+    "gen-env-types": "1.3.3",
+    "get-port": "5.1.1",
+    "graphql-request": "4.1.0",
+    "jest": "^27.5.1",
+    "prisma": "3.10.0",
+    "ts-jest": "^27.1.3",
+    "ts-node": "^10.7.0",
+    "ts-node-dev": "1.1.8",
+    "tsconfig-paths": "^3.14.0",
+    "typescript": "4.6.2"
+  },
+  "prisma": {
+    "seed": "ts-node prisma/seed.ts"
+  },
+  "jest": {
+    "preset": "ts-jest",
+    "testTimeout": 10000,
+    "testPathIgnorePatterns": [
+      "dist",
+      "node_modules"
+    ],
+    "moduleNameMapper": {
+      "^@/(.*)$": "<rootDir>/src/$1"
+    },
+    "testMatch": [
+      "**/?(*.)+(spec|test).[jt]s?(x)"
+    ],
+    "globals": {
+      "ts-jest": {}
+    },
+    "testEnvironment": "node"
+  },
+  "engines": {
+    "node": "16.10",
+    "yarn": "1.x"
+  }
+}
